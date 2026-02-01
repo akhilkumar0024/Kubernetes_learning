@@ -1,3 +1,7 @@
+# the YAML for creating am nginx pod that can create logs and those logs are written in the a separate volume (nginx-log)
+# we mount the path on a volume empty directory can be accessed by all the container 
+# all the reading and the writing that will happen on the /var/nginx/logs/access.log will happen on the volume, becasue its that path is
+#  mounted on the nginx-log volume
 apiVersion: v1
 kind: Pod
 metadata: 
