@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: nginx-pod-single-comtainer
-  labeels:
+  labels:
     app: nginx-pod
 spec:
   containers:
