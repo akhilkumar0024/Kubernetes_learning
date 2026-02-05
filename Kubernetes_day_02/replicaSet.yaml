@@ -1,0 +1,35 @@
+#code for replicasets 
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: zomato-replicaset
+spec:
+  replicas: 3 #no of pods to be maintained
+  selector:
+    matchLabels: # allows us to combine multiple labels will select only those pods that have all the lables mentioned in the matchLabels section
+      app: zomato-app
+  template: #defines the details of the pod
+    metadata: 
+      name: zomato-pod
+      labels:
+        app: zomato-app
+    spec: #specs of the pod that contains the zomato app
+      containers:
+        - name: zomato-container
+          image: kastrov/zomato
+          ports:
+            - containerPort: 3000
+---
+#code for the service
+apiVersion: v1
+kind: Service
+metadata:
+  name: zomato-service-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: zomato-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
