@@ -1,0 +1,43 @@
+#code for the namespace
+apiVersion: v1
+kind: namespace
+metadata: 
+  name: swiggy-namespace
+---
+#code for the pod for swiggy
+apiVersion: v1
+kind: Pod
+metadata:
+  name: swiggy-pod
+  namespace: swiggy-namespace
+  labels:
+    app: swiggy
+spec:
+  conainers:
+    - name: swiggy-container
+      image: kastrov/swiggy      
+      ports: 
+        - conatinerPort: 3000
+
+---
+# code for service
+  apiVersion: v1
+  kind: service
+  metadata:
+    name: swiggy-service
+    namespace: swiggy-namespace
+  spec:
+    type: NodePort
+    selector:
+      app: swiggy
+    ports:
+      - protocol: TCP
+        port: 3000 # service port optional
+        targetPort: 3000 #port of the target container <swiggy Container:3000>
+        nodePort: 32000 
+
+         
+        
+
+
+           
