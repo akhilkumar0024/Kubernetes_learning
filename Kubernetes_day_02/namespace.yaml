@@ -22,7 +22,7 @@ spec:
 ---
 # code for service
   apiVersion: v1
-  kind: service
+  kind: Service
   metadata:
     name: swiggy-service
     namespace: swiggy-namespace
