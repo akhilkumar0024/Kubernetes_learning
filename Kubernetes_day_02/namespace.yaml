@@ -17,7 +17,7 @@ spec:
     - name: swiggy-container
       image: kastrov/swiggy      
       ports: 
-        - conatinerPort: 3000
+        - continerPort: 3000
 
 ---
 # code for service
