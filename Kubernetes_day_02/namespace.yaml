@@ -1,6 +1,6 @@
 #code for the namespace
 apiVersion: v1
-kind: namespace
+kind: Namespace
 metadata: 
   name: swiggy-namespace
 ---
