@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: canary-common-Service
+  name: canary-common-service
   namespace: canary-namespace
 spec:
   type: LoadBalancer
