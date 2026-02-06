@@ -1,0 +1,42 @@
+#code for the namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zomato-namespace
+---
+#code for rolling update deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name : zomato-rolling-update
+  namespace: zomato-namespace
+spec: #specs of pods to be spun up
+  replicas: 3 # 3 pods will be created
+  selector:
+    matchLabels: 
+      app: zomato-app
+  template: #template of the pods
+    metadata:
+      labels:
+        app: zomato-app
+    spec:
+      containers: #details of the container
+        - name: zomato-container
+          image: kastrov/zomato
+          ports: #description of which port the app is listening in the container
+            - containerPort: 3000
+
+---
+#code for the service
+apiVersion: v1
+kind: Service
+metadata:
+  name: zomato-service-lb
+  namespace: zomato-namespace
+spec: 
+  type: LoadBalancer
+  selector:  
+    app: zomato-app
+    ports:
+      - port: 80
+        targetPort: 3000
