@@ -1,0 +1,30 @@
+#code for the deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: canary-deployment-version-1 #name of the deployment
+  namespace: canary-namespace
+spec: 
+  replicas: 5 # number of replicas
+  selector:
+    matchLabels:
+      app: nginx-server #lables to identify the pods
+      version: canary-version-1
+  template: #template of the pods to be created
+    metadata:
+      labels: #labels associated with the pods
+        app: nginx-server
+        version: canary-version-1
+    spec: #specs of the pod
+      containers: #details of the container
+        - name: nginx-container
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - |
+              echo "<html>
+              <h1 style='background-color:red'>This is version 1</h1>
+              </html>" > /usr/share/nginx/html/index.html && nginx -g "daemon off;"
