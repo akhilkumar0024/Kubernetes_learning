@@ -1,0 +1,13 @@
+# Initially routes ONLY to the BLUE version (v1)
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+    version: blue   # ← Switch this later to "green" for release
+  ports:
+  - port: 80
+    targetPort: 80

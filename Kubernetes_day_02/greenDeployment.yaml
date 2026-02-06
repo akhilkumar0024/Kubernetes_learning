@@ -1,0 +1,30 @@
+# 🟢 Green Deployment (Version 2 - New Release)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-green
+spec:
+  replicas: 3 # fully available but not serving traffic yet
+  selector:
+    matchLabels:
+      app: nginx
+      version: green
+  template:
+    metadata:
+      labels:
+        app: nginx
+        version: green
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        command: ["/bin/sh"]
+        args:
+          - "-c"
+          - |
+            echo '<html><body style="background-color:lightgreen;">
+            <h1>www.learnwithkastro.com</h1>
+            <h2>This is GREEN (Version 2)</h2>
+            </body></html>' > /usr/share/nginx/html/index.html && nginx -g "daemon off;"

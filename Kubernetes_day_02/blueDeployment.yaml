@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: nginx
+        version: blue
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        command: ["/bin/sh"]
+        args:
+          - "-c"
+          - |
+            echo '<html><body style="background-color:skyblue;">
+            <h1>YouTube/LearnWithKASTRO</h1>
+            <h2>This is BLUE (Version 1)</h2>
+            </body></html>' > /usr/share/nginx/html/index.html && nginx -g "daemon off;"
