@@ -37,6 +37,6 @@ spec:
   type: LoadBalancer
   selector:  
     app: zomato-app
-    ports:
-      - port: 80
-        targetPort: 3000
+  ports:
+    - port: 
+      targetPort: 3000
