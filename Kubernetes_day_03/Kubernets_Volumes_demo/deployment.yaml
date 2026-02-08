@@ -17,8 +17,8 @@ spec:
         - name: nginx-container
           image: nginx:latest
           volumeMounts:    
-            name: nginx-ebs-volume    #name of the volume to be created 
-            mountPath: /usr/share/nginx/html #data written in this path will be preserved in the volume
+            - name: nginx-ebs-volume    #name of the volume to be created 
+              mountPath: /usr/share/nginx/html #data written in this path will be preserved in the volume
           volumes:
             - name: nginx-ebs-volume   #name of the volume that was created 
               PersistentVolumeClaim:
