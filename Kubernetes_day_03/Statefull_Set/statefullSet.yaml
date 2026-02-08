@@ -1,0 +1,55 @@
+# Headless Service: Provides network identity to StatefulSet pods
+apiVersion: v1              # API version for Service
+kind: Service               # Resource type
+metadata:
+  name: nginx-headless-service # Name used for DNS and internal discovery
+spec:
+  ports:
+    - port: 80              # Port accessible on the service
+      targetPort: 80        # Port the application is listening on in the pod
+  clusterIP: None           # "None" makes it headless; no single IP for the load balancer
+  selector:
+    app: nginx-app          # Routes traffic to pods labeled 'app: nginx-app'
+
+---
+
+# StatefulSet: Manages stateful applications with unique identities
+apiVersion: apps/v1          # API version for StatefulSets
+kind: StatefulSet            # Resource type
+metadata:
+  name: nginx-stateful       # Name of the StatefulSet controller
+spec:
+  serviceName: nginx-headless-service # Links to our Headless Service for DNS names
+  replicas: 2                # Number of pods to maintain
+  selector:
+    matchLabels:
+      app: nginx-app         # Matches the labels on the pods below
+  template:                  # The blueprint for the pods
+    metadata:
+      labels: 
+        app: nginx-app       # Label applied to the pods
+    spec:
+      containers:            # List of containers inside the pod
+        - name: nginx-container
+          image: nginx:latest # Using a standard tag 
+          ports:
+            - containerPort: 80 # The port the container opens
+          volumeMounts:      # Where to attach the storage inside the container
+            - name: nginx-storage # Must match the name in volumeClaimTemplates
+              mountPath: /usr/share/nginx/html # Path in container
+          command:           # Overwrites the default container start command
+            - /bin/bash
+            - -c
+            - |
+              echo "<h1>StatefulSet Pod: $HOSTNAME</h1>" > /usr/share/nginx/html/index.html
+              nginx -g 'daemon off;'
+  # volumeClaimTemplates: Automatically creates a PVC for every pod created
+  volumeClaimTemplates:
+    - metadata: 
+        name: nginx-storage  # Name used in volumeMounts
+      spec:
+        accessModes: [ "ReadWriteOnce" ] # Only 1 node can write at a time
+        storageClassName: nginx-gp3     # Matches the StorageClass name above
+        resources:
+          requests:
+            storage: 1Gi     # Size of the disk to request from AWS

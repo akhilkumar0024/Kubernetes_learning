@@ -1,0 +1,10 @@
+# StorageClass: Defines the type of storage to be provisioned
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nginx-gp3           # Must match storageClassName in the StatefulSet
+provisioner: ebs.csi.aws.com # The driver that talks to AWS (EBS CSI driver)
+parameters:
+  type: gp3                 # The specific AWS EBS volume type (General Purpose SSD)
+volumeBindingMode: WaitForFirstConsumer # Wait for a Pod to be scheduled before creating the disk
+reclaimPolicy: Retain       # Keeps the AWS disk even if the PVC is deleted (safe for data)
