@@ -19,9 +19,10 @@ spec:
           volumeMounts:    
             - name: nginx-ebs-volume    #name of the volume to be created 
               mountPath: /usr/share/nginx/html #data written in this path will be preserved in the volume
-          volumes:
-            - name: nginx-ebs-volume   #name of the volume that was created 
-              PersistentVolumeClaim:
-                claimName:  ebs-volume-claim  #name of the claim
           ports:
-            - containerPort: 80  
+            - containerPort: 80
+      volumes:
+        - name: nginx-ebs-volume   #name of the volume that was created 
+          PersistentVolumeClaim:
+            claimName:  ebs-volume-claim  #name of the claim
+           
