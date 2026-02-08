@@ -23,6 +23,6 @@ spec:
             - containerPort: 80
       volumes:
         - name: nginx-ebs-volume   #name of the volume that was created 
-          PersistentVolumeClaim:
+          persistentVolumeClaim:
             claimName:  ebs-volume-claim  #name of the claim
            
