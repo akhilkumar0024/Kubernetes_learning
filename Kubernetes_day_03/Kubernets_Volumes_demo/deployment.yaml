@@ -1,0 +1,27 @@
+#code for the deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-ebs-demo-Deployment #namae of the deployment
+spec:
+  replicas: 1 #number of pods to be created and kept alive
+  selector:
+    matchLabels: #labels to keep track of the pods
+      app: nginx-app
+  template: #template of the pods to be created 
+    metadata:
+      labels:
+        app: nginx-app  #label of the pods
+    spec:          # specs of the pods
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+          volumeMounts:    
+            name: nginx-ebs-volume    #name of the volume to be created 
+            mountPath: /usr/share/nginx/html #data written in this path will be preserved in the volume
+          volumes:
+            - name: nginx-ebs-volume   #name of the volume that was created 
+              PersistentVolumeClaim:
+                claimName:  ebs-volume-claim  #name of the claim
+          ports:
+            - containerPort: 80  
