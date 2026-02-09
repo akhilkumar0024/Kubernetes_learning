@@ -1,0 +1,35 @@
+#code for the deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app2-pod
+  template:
+    metadata:
+      labels:
+        app: app2-pod
+    spec:
+      containers:
+      - name: app2-container
+        image: akhilkumar119/app2-image:v1
+        ports:
+        - containerPort: 80
+
+---
+
+#ccode for the service file 
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2-service #this service name will be referenced in the ingress controller yaml file
+spec:
+  selector:
+     app: app2-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
